@@ -1374,6 +1374,18 @@ function closeActionModal() {
   }
 }
 
+function escapeHTML(str) {
+  return str.replace(/[&<>'"]/g, 
+    tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag] || tag)
+  );
+}
+
 function handleReportActionSubmit(event) {
   event.preventDefault();
   const city = document.getElementById('action-city').value.trim();
@@ -1381,6 +1393,9 @@ function handleReportActionSubmit(event) {
   const description = document.getElementById('action-description').value.trim();
   
   if (!city || !description) return;
+  
+  const escapedCity = escapeHTML(city);
+  const escapedDescription = escapeHTML(description);
   
   // 1. Calculate semi-random coordinates on the SVG map (viewBox 0 0 1000 500)
   const x = Math.floor(Math.random() * 600) + 200; // between 200 and 800
@@ -1392,12 +1407,16 @@ function handleReportActionSubmit(event) {
     const pinGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     pinGroup.setAttribute('class', `map-pin ${category === 'water' ? 'blue' : category === 'electric' ? 'yellow' : category === 'steel' ? 'red' : category === 'wind' ? 'blue' : ''}`);
     pinGroup.setAttribute('transform', `translate(${x}, ${y})`);
-    pinGroup.setAttribute('data-city', city);
-    pinGroup.setAttribute('data-action', description);
+    pinGroup.setAttribute('data-city', escapedCity);
+    pinGroup.setAttribute('data-action', escapedDescription);
     pinGroup.setAttribute('data-element', category);
     pinGroup.setAttribute('data-trainers', '1');
     pinGroup.setAttribute('data-xp', '+50 XP');
-    pinGroup.setAttribute('onclick', `triggerMapFeed('${city}', '${description}', '${category}')`);
+    
+    // Bind click event cleanly in JS memory, bypassing string onclick attribute XSS vectors
+    pinGroup.addEventListener('click', () => {
+      triggerMapFeed(escapedCity, escapedDescription, category);
+    });
     
     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     circle.setAttribute('cx', '0');
@@ -1410,6 +1429,7 @@ function handleReportActionSubmit(event) {
     // Re-bind tooltips
     initMapTooltips();
   }
+
   
   // 3. Award XP to corresponding Pokémon
   const pokemonMapping = {
@@ -1832,4 +1852,7 @@ window.closeActionModal = closeActionModal;
 window.handleReportActionSubmit = handleReportActionSubmit;
 window.updateSimulation = updateSimulation;
 window.updateScannerValue = updateScannerValue;
+window.updateTrainerUI = updateTrainerUI;
+window.getDynamicCoachResponse = getDynamicCoachResponse;
+
 

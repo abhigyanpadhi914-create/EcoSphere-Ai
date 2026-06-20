@@ -219,8 +219,8 @@
         </div>
 
         <div class="coach-input-wrapper">
-          <input type="text" id="chat-input" class="coach-input" placeholder="Ask your AI Coach anything..." onkeypress="handleChatKey(event)">
-          <button class="btn-send-coach" id="chat-send-btn" onclick="sendUserMessage()">
+          <input type="text" id="chat-input" class="coach-input" placeholder="Ask your AI Coach anything..." onkeypress="handleChatKey(event)" aria-label="Ask your AI Coach anything">
+          <button class="btn-send-coach" id="chat-send-btn" onclick="sendUserMessage()" aria-label="Send message to AI Coach">
             <i data-lucide="send"></i>
           </button>
         </div>
@@ -570,17 +570,17 @@
             <span class="scanner-question-title"><i data-lucide="car"></i> Transportation Habits</span>
             <div class="slider-group">
               <div class="slider-label-wrapper">
-                <span>Weekly car mileage</span>
+                <label for="input-car">Weekly car mileage</label>
                 <span><span class="slider-unit" id="val-car">120</span> miles</span>
               </div>
-              <input type="range" class="slider-input" id="input-car" min="0" max="500" value="120" oninput="updateScannerValue('car')">
+              <input type="range" class="slider-input" id="input-car" min="0" max="500" value="120" oninput="updateScannerValue('car')" aria-label="Weekly car mileage">
             </div>
             <div class="slider-group">
               <div class="slider-label-wrapper">
-                <span>Public transit usage</span>
+                <label for="input-transit">Public transit usage</label>
                 <span><span class="slider-unit" id="val-transit">4</span> hours</span>
               </div>
-              <input type="range" class="slider-input" id="input-transit" min="0" max="40" value="4" oninput="updateScannerValue('transit')">
+              <input type="range" class="slider-input" id="input-transit" min="0" max="40" value="4" oninput="updateScannerValue('transit')" aria-label="Public transit usage">
             </div>
           </div>
 
@@ -589,17 +589,17 @@
             <span class="scanner-question-title"><i data-lucide="plug"></i> Domestic Utility Load</span>
             <div class="slider-group">
               <div class="slider-label-wrapper">
-                <span>Monthly electricity consumption</span>
+                <label for="input-elec">Monthly electricity consumption</label>
                 <span><span class="slider-unit" id="val-elec">280</span> kWh</span>
               </div>
-              <input type="range" class="slider-input" id="input-elec" min="50" max="1000" value="280" oninput="updateScannerValue('elec')">
+              <input type="range" class="slider-input" id="input-elec" min="50" max="1000" value="280" oninput="updateScannerValue('elec')" aria-label="Monthly electricity consumption">
             </div>
             <div class="slider-group">
               <div class="slider-label-wrapper">
-                <span>Renewable grid power portion</span>
+                <label for="input-renew">Renewable grid power portion</label>
                 <span><span class="slider-unit" id="val-renew">20</span> %</span>
               </div>
-              <input type="range" class="slider-input" id="input-renew" min="0" max="100" value="20" oninput="updateScannerValue('renew')">
+              <input type="range" class="slider-input" id="input-renew" min="0" max="100" value="20" oninput="updateScannerValue('renew')" aria-label="Renewable grid power portion">
             </div>
           </div>
 
@@ -608,17 +608,17 @@
             <span class="scanner-question-title"><i data-lucide="apple"></i> Diet & Waste Diversion</span>
             <div class="slider-group">
               <div class="slider-label-wrapper">
-                <span>Meat meals consumed weekly</span>
+                <label for="input-meat">Meat meals consumed weekly</label>
                 <span><span class="slider-unit" id="val-meat">5</span> meals</span>
               </div>
-              <input type="range" class="slider-input" id="input-meat" min="0" max="21" value="5" oninput="updateScannerValue('meat')">
+              <input type="range" class="slider-input" id="input-meat" min="0" max="21" value="5" oninput="updateScannerValue('meat')" aria-label="Meat meals consumed weekly">
             </div>
             <div class="slider-group">
               <div class="slider-label-wrapper">
-                <span>Recycled/composted waste fraction</span>
+                <label for="input-waste">Recycled/composted waste fraction</label>
                 <span><span class="slider-unit" id="val-waste-slider">60</span> %</span>
               </div>
-              <input type="range" class="slider-input" id="input-waste" min="0" max="100" value="60" oninput="updateScannerValue('waste')">
+              <input type="range" class="slider-input" id="input-waste" min="0" max="100" value="60" oninput="updateScannerValue('waste')" aria-label="Recycled or composted waste fraction">
             </div>
           </div>
         </div>
@@ -647,24 +647,24 @@
         <div class="future-controls">
           <div class="slider-group">
             <div class="slider-label-wrapper">
-              <span>Transition to clean household grid</span>
+              <label for="sim-clean">Transition to clean household grid</label>
               <span><span class="slider-unit" id="sim-val-clean">20</span> % clean energy</span>
             </div>
-            <input type="range" class="slider-input" id="sim-clean" min="0" max="100" value="20" oninput="updateSimulation()">
+            <input type="range" class="slider-input" id="sim-clean" min="0" max="100" value="20" oninput="updateSimulation()" aria-label="Transition to clean household grid">
           </div>
           <div class="slider-group">
             <div class="slider-label-wrapper">
-              <span>Increase plant-based nutrition ratio</span>
+              <label for="sim-plant">Increase plant-based nutrition ratio</label>
               <span><span class="slider-unit" id="sim-val-plant">30</span> % vegan</span>
             </div>
-            <input type="range" class="slider-input" id="sim-plant" min="0" max="100" value="30" oninput="updateSimulation()">
+            <input type="range" class="slider-input" id="sim-plant" min="0" max="100" value="30" oninput="updateSimulation()" aria-label="Increase plant-based nutrition ratio">
           </div>
           <div class="slider-group">
             <div class="slider-label-wrapper">
-              <span>Adopt active or electric transport</span>
+              <label for="sim-transport">Adopt active or electric transport</label>
               <span><span class="slider-unit" id="sim-val-transport">15</span> % EV/Cycling</span>
             </div>
-            <input type="range" class="slider-input" id="sim-transport" min="0" max="100" value="15" oninput="updateSimulation()">
+            <input type="range" class="slider-input" id="sim-transport" min="0" max="100" value="15" oninput="updateSimulation()" aria-label="Adopt active or electric transport">
           </div>
         </div>
       </div>
