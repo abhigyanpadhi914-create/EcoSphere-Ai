@@ -1847,6 +1847,75 @@ footer {
   }
 }
 
+@media (max-width: 768px) {
+  /* Panel Paddings & Layout Restructuring for Mobile */
+  .panel-score,
+  .panel-ecodex,
+  .panel-timeline,
+  .panel-coach,
+  .panel-gamification,
+  .scanner-panel,
+  .map-panel,
+  .evolution-stage-wrapper {
+    padding: 1.25rem !important;
+  }
+
+  /* Hero Mobile Optimization */
+  .hero {
+    padding-top: 80px;
+    min-height: auto;
+  }
+  .hero-visual {
+    height: auto;
+    min-height: 380px;
+    flex-direction: column;
+  }
+  #globe-canvas {
+    height: 320px;
+  }
+  
+  /* Restyle floating badges to stack underneath the globe */
+  .hero-float-badges {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    margin-top: 1.5rem;
+    inset: auto;
+    pointer-events: auto;
+  }
+  
+  .float-badge {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 280px;
+    justify-content: flex-start;
+    animation: none !important;
+  }
+
+  /* Map Sidebar / Action Header stacks */
+  .map-action-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    text-align: center;
+  }
+  .map-action-header .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .map-svg-container {
+    height: 300px;
+    padding: 0.75rem;
+  }
+}
+
 @media (max-width: 640px) {
   .creatures-grid {
     grid-template-columns: 1fr;
@@ -1860,7 +1929,54 @@ footer {
   .hero h1 {
     font-size: 2.5rem;
   }
+  
+  /* CTA Stack */
+  .cta-group {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .cta-group .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Coach Input Wrapper stacks */
+  .coach-input-wrapper {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .btn-send-coach {
+    width: 100%;
+  }
+
+  /* Simulator Header layout */
+  .scanner-steps {
+    margin-bottom: 1.5rem;
+  }
+  .step-node {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+
+  /* Header adjustments */
+  .logo span {
+    font-size: 1rem;
+  }
+  
+  /* Modal responsive content sizing */
+  .evolution-visuals {
+    width: 200px;
+  }
+  .evo-creature-sprite img.creature-svg {
+    width: 130px;
+    height: 130px;
+  }
 }
+
 
 /* Upgraded Creature Image Styling */
 .creature-svg {
@@ -3142,6 +3258,8 @@ footer::after {
   transform: translateY(8px) scale(0.95);
   transition: opacity 0.25s ease, transform 0.25s ease;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 210, 106, 0.08);
+  max-width: 220px;
+  white-space: normal;
   min-width: 180px;
 }
 

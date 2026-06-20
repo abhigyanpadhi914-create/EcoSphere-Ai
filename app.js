@@ -1110,6 +1110,18 @@ function initScrollSpy() {
       }
     });
   });
+
+  // Close mobile nav drawer when clicking any menu link
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const hamburger = document.getElementById('nav-hamburger');
+      const links = document.getElementById('nav-links');
+      if (hamburger && links) {
+        hamburger.classList.remove('open');
+        links.classList.remove('mobile-open');
+      }
+    });
+  });
 }
 
 // ==========================================
@@ -1728,31 +1740,61 @@ function initUpgradedMapTooltips() {
   const container = document.querySelector('.map-svg-container');
   if (!tooltip || !pins.length || !container) return;
   
+  let tooltipTimeout;
+
+  const showTooltip = (pin) => {
+    const city = pin.getAttribute('data-city') || '';
+    const action = pin.getAttribute('data-action') || '';
+    const trainers = pin.getAttribute('data-trainers') || '';
+    const xp = pin.getAttribute('data-xp') || '';
+    
+    tooltip.innerHTML = 
+      '<div class="map-tooltip-city">' + city + '</div>' +
+      '<div class="map-tooltip-action">' + action + '</div>' +
+      '<div class="map-tooltip-stats">' +
+        '<div class="map-tooltip-stat"><span class="map-tooltip-stat-label">Trainers</span><span class="map-tooltip-stat-val">' + trainers + '</span></div>' +
+        '<div class="map-tooltip-stat"><span class="map-tooltip-stat-label">Alliance XP</span><span class="map-tooltip-stat-val">' + xp + '</span></div>' +
+      '</div>';
+    
+    const rect = container.getBoundingClientRect();
+    const pinRect = pin.getBoundingClientRect();
+    tooltip.style.left = (pinRect.left - rect.left + pinRect.width / 2 - 90) + 'px';
+    tooltip.style.top = (pinRect.top - rect.top - 10) + 'px';
+    tooltip.classList.add('visible');
+  };
+
+  const hideTooltip = () => {
+    tooltip.classList.remove('visible');
+  };
+  
   pins.forEach(pin => {
-    pin.addEventListener('mouseenter', (e) => {
-      const city = pin.getAttribute('data-city') || '';
-      const action = pin.getAttribute('data-action') || '';
-      const trainers = pin.getAttribute('data-trainers') || '';
-      const xp = pin.getAttribute('data-xp') || '';
-      
-      tooltip.innerHTML = 
-        '<div class="map-tooltip-city">' + city + '</div>' +
-        '<div class="map-tooltip-action">' + action + '</div>' +
-        '<div class="map-tooltip-stats">' +
-          '<div class="map-tooltip-stat"><span class="map-tooltip-stat-label">Trainers</span><span class="map-tooltip-stat-val">' + trainers + '</span></div>' +
-          '<div class="map-tooltip-stat"><span class="map-tooltip-stat-label">Alliance XP</span><span class="map-tooltip-stat-val">' + xp + '</span></div>' +
-        '</div>';
-      
-      const rect = container.getBoundingClientRect();
-      const pinRect = pin.getBoundingClientRect();
-      tooltip.style.left = (pinRect.left - rect.left + pinRect.width / 2 - 90) + 'px';
-      tooltip.style.top = (pinRect.top - rect.top - 10) + 'px';
-      tooltip.classList.add('visible');
+    // Desktop hover enter
+    pin.addEventListener('mouseenter', () => {
+      if (tooltipTimeout) clearTimeout(tooltipTimeout);
+      showTooltip(pin);
     });
     
+    // Desktop hover leave
     pin.addEventListener('mouseleave', () => {
-      tooltip.classList.remove('visible');
+      hideTooltip();
     });
+
+    // Mobile tap support / Click toggle
+    pin.addEventListener('click', (e) => {
+      e.stopPropagation(); // Avoid event collision
+      if (tooltipTimeout) clearTimeout(tooltipTimeout);
+      showTooltip(pin);
+      
+      // Auto-hide tooltip after 3 seconds on mobile touch
+      tooltipTimeout = setTimeout(() => {
+        hideTooltip();
+      }, 3000);
+    });
+  });
+
+  // Tap anywhere else to dismiss tooltip
+  document.addEventListener('click', () => {
+    hideTooltip();
   });
 }
 
@@ -1772,3 +1814,22 @@ function initUpgradedMapTooltips() {
     initUpgradedMapTooltips();
   }
 })();
+
+// --- 22. Expose functions to window (Module wrapper compatibility) ---
+window.toggleMobileNav = toggleMobileNav;
+window.sendSuggestedChat = sendSuggestedChat;
+window.sendUserMessage = sendUserMessage;
+window.triggerEvolution = triggerEvolution;
+window.toggleQuest = toggleQuest;
+window.scannerPrevStep = scannerPrevStep;
+window.scannerNextStep = scannerNextStep;
+window.submitFootprintScan = submitFootprintScan;
+window.openActionModal = openActionModal;
+window.triggerMapFeed = triggerMapFeed;
+window.closeEvolutionScreen = closeEvolutionScreen;
+window.closeCreatureModal = closeCreatureModal;
+window.closeActionModal = closeActionModal;
+window.handleReportActionSubmit = handleReportActionSubmit;
+window.updateSimulation = updateSimulation;
+window.updateScannerValue = updateScannerValue;
+
