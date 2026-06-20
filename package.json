@@ -1,0 +1,12 @@
+{
+  "name": "ecosphere-ai",
+  "version": "1.0.0",
+  "description": "EcoSphere AI - Pokémon Edition (Award-Winning Sustainability Platform)",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite --port 3000 --open"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0"
+  }
+}

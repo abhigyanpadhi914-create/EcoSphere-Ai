@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoSphere AI – Train for a Better Planet</title>
+  <meta name="description" content="Embark on a gamified journey to track your carbon footprint, collect eco-creatures, and evolve your ecological impact using AI-powered insights.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
+  <link rel="stylesheet" href="index.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress-bar" id="scroll-progress"></div>
+
+  <!-- Background Orbs and Particles -->
+  <canvas id="particle-canvas"></canvas>
+  <div class="background-glows">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+    <div class="glow-orb orb-cursor" id="orb-cursor"></div>
+  </div>
+
+  <!-- Glassmorphic Header -->
+  <nav>
+    <div class="nav-container">
+      <div class="logo" id="nav-logo">
+        <svg viewBox="0 0 24 24" width="32" height="32" stroke="url(#logoGradient)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <defs>
+            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00D26A" />
+              <stop offset="100%" stop-color="#00BFFF" />
+            </linearGradient>
+          </defs>
+          <path d="M12 2a10 10 0 0 1 7.54 16.59l-1.42-1.42A8 8 0 1 0 5.88 17.17l-1.42 1.42A10 10 0 0 1 12 2z"/>
+          <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/>
+          <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/>
+          <path d="M12 15l0 7"/>
+        </svg>
+        <span>EcoSphere AI</span>
+      </div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#hero" class="active" id="link-hero">Home</a></li>
+        <li><a href="#dashboard" id="link-dashboard">Dashboard</a></li>
+        <li><a href="#simulator" id="link-simulator">Scanner & Simulator</a></li>
+        <li><a href="#community" id="link-community">Global Map</a></li>
+      </ul>
+      <div class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="user-status">
+        <div class="xp-badge">
+          <i data-lucide="zap"></i>
+          <span>Trainer Rank: Lvl <span id="trainer-level">1</span></span>
+        </div>
+        <div class="streak-badge">
+          <i data-lucide="flame"></i>
+          <span><span id="trainer-streak">3</span> Day Streak</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Immersive Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-grid-pattern"></div>
+    <div class="hero-scan"></div>
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="eco-tag">
+          <span></span> Eco Master Trainer Journey Active
+        </div>
+        <h1>Train for a<br>Better Planet.</h1>
+        <p>Track your <span class="hero-subtitle-cycle" id="hero-cycle"><span class="hero-cycle-word active">environmental footprint</span><span class="hero-cycle-word">carbon emissions</span><span class="hero-cycle-word">ecological impact</span><span class="hero-cycle-word">climate journey</span></span>, unlock AI-powered insights, and evolve your impact one action at a time.</p>
+        <div class="cta-group">
+          <a href="#simulator" class="btn btn-primary">
+            Start Your Journey <i data-lucide="arrow-right"></i>
+          </a>
+          <a href="#dashboard" class="btn btn-secondary">
+            Explore the Ecosystem
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <canvas id="globe-canvas"></canvas>
+        <!-- Floating Stat Badges -->
+        <div class="hero-float-badges">
+          <div class="float-badge float-badge-green float-badge-pos-1">
+            <div class="float-badge-icon"><i data-lucide="users"></i></div>
+            <div>
+              <span class="float-badge-num">47,382</span>
+              <span class="float-badge-label">Active Trainers</span>
+            </div>
+          </div>
+          <div class="float-badge float-badge-blue float-badge-pos-2">
+            <div class="float-badge-icon"><i data-lucide="leaf"></i></div>
+            <div>
+              <span class="float-badge-num">128k</span>
+              <span class="float-badge-label">Eco-Actions Logged</span>
+            </div>
+          </div>
+          <div class="float-badge float-badge-yellow float-badge-pos-3">
+            <div class="float-badge-icon"><i data-lucide="trending-down"></i></div>
+            <div>
+              <span class="float-badge-num">9.4k t</span>
+              <span class="float-badge-label">CO₂ Saved</span>
+            </div>
+          </div>
+        </div>
+        <div class="globe-info-overlay">
+          <div class="info-stat">
+            <i data-lucide="activity"></i>
+            <span>Global Health Index: <span id="global-health-val">76%</span></span>
+          </div>
+          <div class="info-stat sky-active">
+            <i data-lucide="cloud-sun"></i>
+            <span id="globe-atmosphere-val">Atmosphere: Balanced</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Divider -->
+  <div class="section-divider"></div>
+
+  <!-- Dashboard Section -->
+  <section class="page-section" id="dashboard" style="position: relative;">
+    <span class="section-num-label">01</span>
+    <div class="section-header reveal">
+      <span class="section-subtitle">Core Center</span>
+      <h2 class="section-title">Eco Master Dashboard</h2>
+    </div>
+
+    <div class="dashboard-grid">
+      <!-- Personal Impact Score -->
+      <div class="glass-panel panel-score reveal reveal-left">
+        <div class="score-header">
+          <div class="score-title">
+            <h3>Personal Impact Score</h3>
+            <p>Real-time environmental health calculation</p>
+          </div>
+          <div class="score-badge-main" id="score-rating">Eco-Guardian Grade B</div>
+        </div>
+
+        <div class="score-vis-container">
+          <div class="radial-chart-wrapper">
+            <svg class="radial-chart-svg" width="220" height="220" viewBox="0 0 220 220">
+              <!-- Radial background track -->
+              <circle cx="110" cy="110" r="90" fill="none" stroke="rgba(255, 255, 255, 0.05)" stroke-width="12"></circle>
+              <!-- Radial foreground animation -->
+              <circle id="radial-progress-circle" cx="110" cy="110" r="90" fill="none" stroke="url(#emeraldGradient)" stroke-width="12" stroke-dasharray="565" stroke-dashoffset="141" stroke-linecap="round"></circle>
+              <defs>
+                <linearGradient id="emeraldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00D26A" />
+                  <stop offset="100%" stop-color="#00BFFF" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="radial-chart-inner">
+              <span class="score-num" id="current-impact-score">750</span>
+              <span class="score-label">Max 1000</span>
+            </div>
+          </div>
+
+          <div class="score-stats">
+            <div class="stat-card carbon">
+              <span class="stat-icon"><i data-lucide="skull"></i></span>
+              <span class="stat-card-title">Carbon Footprint</span>
+              <span class="stat-card-value"><span id="stat-val-carbon">4.8</span> t CO₂e</span>
+            </div>
+            <div class="stat-card energy">
+              <span class="stat-icon"><i data-lucide="zap"></i></span>
+              <span class="stat-card-title">Energy Consumption</span>
+              <span class="stat-card-value"><span id="stat-val-energy">280</span> kWh</span>
+            </div>
+            <div class="stat-card water">
+              <span class="stat-icon"><i data-lucide="droplet"></i></span>
+              <span class="stat-card-title">Water Savings</span>
+              <span class="stat-card-value"><span id="stat-val-water">1,200</span> Gal</span>
+            </div>
+            <div class="stat-card waste">
+              <span class="stat-icon"><i data-lucide="recycle"></i></span>
+              <span class="stat-card-title">Waste Diverted</span>
+              <span class="stat-card-value"><span id="stat-val-waste">85</span> %</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Sustainability Coach -->
+      <div class="glass-panel panel-coach reveal reveal-right reveal-delay-2">
+        <div class="coach-header">
+          <div class="coach-avatar">
+            <i data-lucide="bot"></i>
+            <div class="coach-status-dot"></div>
+          </div>
+          <div class="coach-info">
+            <h4>EcoSphere AI Coach</h4>
+            <p>Smart Climate Advisor • Active</p>
+          </div>
+        </div>
+
+        <div class="coach-messages" id="chat-messages">
+          <div class="message bot">
+            Greetings, Trainer! I am your AI Climate Coach. I analyze your footprints and advise you on expanding your EcoDex companions. How can I assist you today?
+          </div>
+        </div>
+
+        <div class="coach-suggested-prompts">
+          <button class="btn-suggested" onclick="sendSuggestedChat('Give me a daily quest')">Give me a daily quest</button>
+          <button class="btn-suggested" onclick="sendSuggestedChat('How do I evolve Bulbasaur?')">How to evolve Bulbasaur?</button>
+          <button class="btn-suggested" onclick="sendSuggestedChat('Analyze my carbon footprint')">Analyze my footprint</button>
+        </div>
+
+        <div class="coach-input-wrapper">
+          <input type="text" id="chat-input" class="coach-input" placeholder="Ask your AI Coach anything..." onkeypress="handleChatKey(event)">
+          <button class="btn-send-coach" id="chat-send-btn" onclick="sendUserMessage()">
+            <i data-lucide="send"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- EcoDex Collection System -->
+      <div class="glass-panel panel-ecodex reveal reveal-delay-1">
+        <div class="ecodex-header">
+          <div>
+            <h3>EcoDex Companion System</h3>
+            <p>Evolve creatures by adopting carbon-reducing habits</p>
+          </div>
+          <div class="ecodex-search-filter">
+            <input type="text" class="ecodex-search" id="dex-search" placeholder="Search EcoDex..." oninput="filterEcoDex()">
+            <select class="ecodex-filter" id="dex-filter" onchange="filterEcoDex()">
+              <option value="all">All Elements</option>
+              <option value="grass">Grass (Tree Planting)</option>
+              <option value="water">Water (Conservation)</option>
+              <option value="electric">Electric (Energy)</option>
+              <option value="steel">Steel (Recycling)</option>
+              <option value="wind">Wind (Transportation)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Trainer XP Progress Banner -->
+        <div class="trainer-xp-banner" id="xp-banner">
+          <div class="trainer-xp-banner-icon"><i data-lucide="zap"></i></div>
+          <div class="trainer-xp-banner-text">
+            <p>Trainer Progress · Level <strong id="xp-banner-level">1</strong> → <strong>2</strong></p>
+            <div class="trainer-xp-track">
+              <div class="trainer-xp-fill" id="xp-banner-fill"></div>
+            </div>
+          </div>
+          <div class="trainer-xp-banner-rank">
+            <strong id="xp-banner-pts">450 / 1000 XP</strong>
+            <span>Next rank: Eco-Knight</span>
+          </div>
+        </div>
+
+        <div class="creatures-grid" id="dex-grid">
+          <!-- Bulbasaur Card -->
+          <div class="creature-card element-grass" data-element="grass" id="card-bulbasaur">
+            <div class="creature-header">
+              <span class="creature-id">#001</span>
+              <span class="creature-type-pill">Grass</span>
+            </div>
+            <div class="creature-visual-box">
+              <div class="creature-glow-bg"></div>
+              <div class="creature-svg-wrapper" id="svg-bulbasaur">
+                <!-- SVG injected dynamically -->
+              </div>
+            </div>
+            <div class="creature-info">
+              <span class="creature-name" id="name-bulbasaur">Bulbasaur</span>
+              <span class="creature-evolution-info" id="stage-bulbasaur">Stage 1: Seed Pokémon</span>
+            </div>
+            <div class="creature-xp-bar-container">
+              <div class="creature-xp-header">
+                <span>XP Progress</span>
+                <span id="xp-text-bulbasaur">80 / 100 XP</span>
+              </div>
+              <div class="creature-xp-bar">
+                <div class="creature-xp-fill" id="xp-fill-bulbasaur" style="width: 80%;"></div>
+              </div>
+            </div>
+            <button class="btn-evolve" id="btn-evolve-bulbasaur" onclick="triggerEvolution('bulbasaur')">Evolve Pokémon</button>
+          </div>
+
+          <!-- Squirtle Card -->
+          <div class="creature-card element-water" data-element="water" id="card-squirtle">
+            <div class="creature-header">
+              <span class="creature-id">#007</span>
+              <span class="creature-type-pill">Water</span>
+            </div>
+            <div class="creature-visual-box">
+              <div class="creature-glow-bg"></div>
+              <div class="creature-svg-wrapper" id="svg-squirtle">
+                <!-- SVG injected dynamically -->
+              </div>
+            </div>
+            <div class="creature-info">
+              <span class="creature-name" id="name-squirtle">Squirtle</span>
+              <span class="creature-evolution-info" id="stage-squirtle">Stage 1: Tiny Turtle Pokémon</span>
+            </div>
+            <div class="creature-xp-bar-container">
+              <div class="creature-xp-header">
+                <span>XP Progress</span>
+                <span id="xp-text-squirtle">30 / 100 XP</span>
+              </div>
+              <div class="creature-xp-bar">
+                <div class="creature-xp-fill" id="xp-fill-squirtle" style="width: 30%;"></div>
+              </div>
+            </div>
+            <button class="btn-evolve" id="btn-evolve-squirtle" onclick="triggerEvolution('squirtle')" disabled>Evolve Pokémon</button>
+          </div>
+
+          <!-- Pichu Card -->
+          <div class="creature-card element-electric" data-element="electric" id="card-pichu">
+            <div class="creature-header">
+              <span class="creature-id">#172</span>
+              <span class="creature-type-pill">Electric</span>
+            </div>
+            <div class="creature-visual-box">
+              <div class="creature-glow-bg"></div>
+              <div class="creature-svg-wrapper" id="svg-pichu">
+                <!-- SVG injected dynamically -->
+              </div>
+            </div>
+            <div class="creature-info">
+              <span class="creature-name" id="name-pichu">Pichu</span>
+              <span class="creature-evolution-info" id="stage-pichu">Stage 1: Tiny Mouse Pokémon</span>
+            </div>
+            <div class="creature-xp-bar-container">
+              <div class="creature-xp-header">
+                <span>XP Progress</span>
+                <span id="xp-text-pichu">100 / 100 XP</span>
+              </div>
+              <div class="creature-xp-bar">
+                <div class="creature-xp-fill" id="xp-fill-pichu" style="width: 100%;"></div>
+              </div>
+            </div>
+            <button class="btn-evolve" id="btn-evolve-pichu" onclick="triggerEvolution('pichu')">Evolve Pokémon</button>
+          </div>
+
+          <!-- Magnemite Card -->
+          <div class="creature-card element-steel" data-element="steel" id="card-magnemite">
+            <div class="creature-header">
+              <span class="creature-id">#081</span>
+              <span class="creature-type-pill">Steel</span>
+            </div>
+            <div class="creature-visual-box">
+              <div class="creature-glow-bg"></div>
+              <div class="creature-svg-wrapper" id="svg-magnemite">
+                <!-- SVG injected dynamically -->
+              </div>
+            </div>
+            <div class="creature-info">
+              <span class="creature-name" id="name-magnemite">Magnemite</span>
+              <span class="creature-evolution-info" id="stage-magnemite">Stage 1: Magnet Pokémon</span>
+            </div>
+            <div class="creature-xp-bar-container">
+              <div class="creature-xp-header">
+                <span>XP Progress</span>
+                <span id="xp-text-magnemite">45 / 100 XP</span>
+              </div>
+              <div class="creature-xp-bar">
+                <div class="creature-xp-fill" id="xp-fill-magnemite" style="width: 45%;"></div>
+              </div>
+            </div>
+            <button class="btn-evolve" id="btn-evolve-magnemite" onclick="triggerEvolution('magnemite')" disabled>Evolve Pokémon</button>
+          </div>
+
+          <!-- Pidgey Card -->
+          <div class="creature-card element-wind" data-element="wind" id="card-pidgey">
+            <div class="creature-header">
+              <span class="creature-id">#016</span>
+              <span class="creature-type-pill">Flying</span>
+            </div>
+            <div class="creature-visual-box">
+              <div class="creature-glow-bg"></div>
+              <div class="creature-svg-wrapper" id="svg-pidgey">
+                <!-- SVG injected dynamically -->
+              </div>
+            </div>
+            <div class="creature-info">
+              <span class="creature-name" id="name-pidgey">Pidgey</span>
+              <span class="creature-evolution-info" id="stage-pidgey">Stage 1: Tiny Bird Pokémon</span>
+            </div>
+            <div class="creature-xp-bar-container">
+              <div class="creature-xp-header">
+                <span>XP Progress</span>
+                <span id="xp-text-pidgey">0 / 100 XP</span>
+              </div>
+              <div class="creature-xp-bar">
+                <div class="creature-xp-fill" id="xp-fill-pidgey" style="width: 0%;"></div>
+              </div>
+            </div>
+            <button class="btn-evolve" id="btn-evolve-pidgey" onclick="triggerEvolution('pidgey')" disabled>Evolve Pokémon</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gamification panel -->
+      <div class="glass-panel panel-gamification reveal reveal-right reveal-delay-3">
+        <div class="gamification-section">
+          <h4 class="gamification-title"><i data-lucide="check-square"></i> Daily Quests</h4>
+          <div class="quest-list">
+            <div class="quest-item" id="quest-1" onclick="toggleQuest('quest-1', 50)">
+              <div class="quest-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              <div class="quest-info">
+                <span class="quest-name">Walk or cycle to work/school today</span>
+                <span class="quest-xp">+50 XP</span>
+              </div>
+            </div>
+            <div class="quest-item" id="quest-2" onclick="toggleQuest('quest-2', 30)">
+              <div class="quest-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              <div class="quest-info">
+                <span class="quest-name">Unplug electronics on standby</span>
+                <span class="quest-xp">+30 XP</span>
+              </div>
+            </div>
+            <div class="quest-item" id="quest-3" onclick="toggleQuest('quest-3', 45)">
+              <div class="quest-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              <div class="quest-info">
+                <span class="quest-name">Segregate 100% of trash items</span>
+                <span class="quest-xp">+45 XP</span>
+              </div>
+            </div>
+            <div class="quest-item" id="quest-4" onclick="toggleQuest('quest-4', 60)">
+              <div class="quest-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              <div class="quest-info">
+                <span class="quest-name">Plant a tree/sapling or water plants today</span>
+                <span class="quest-xp">+60 XP</span>
+              </div>
+            </div>
+            <div class="quest-item" id="quest-5" onclick="toggleQuest('quest-5', 40)">
+              <div class="quest-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              <div class="quest-info">
+                <span class="quest-name">Limit shower time to under 5 minutes</span>
+                <span class="quest-xp">+40 XP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gamification-section">
+          <h4 class="gamification-title"><i data-lucide="award"></i> Trainer Badges</h4>
+          <div class="badges-showcase">
+            <div class="badge-item unlocked" id="badge-seed-sower" title="Unlocked by planting trees (Bulbasaur evolutions)">
+              <div class="badge-circle">🌱</div>
+              <span class="badge-name">Seed Sower</span>
+            </div>
+            <div class="badge-item" id="badge-wave-maker" title="Conserve water to unlock (Squirtle evolutions)">
+              <div class="badge-circle">🌊</div>
+              <span class="badge-name">Wave Maker</span>
+            </div>
+            <div class="badge-item unlocked" id="badge-volt-spark" title="Save electricity to unlock (Pichu evolutions)">
+              <div class="badge-circle">⚡</div>
+              <span class="badge-name">Volt Spark</span>
+            </div>
+            <div class="badge-item" id="badge-metal-melter" title="Recycle waste to unlock (Magnemite evolutions)">
+              <div class="badge-circle">⚙️</div>
+              <span class="badge-name">Recycle Lord</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gamification-section">
+          <h4 class="gamification-title"><i data-lucide="users"></i> Leaderboard</h4>
+          <div class="leaderboard-list">
+            <div class="leader-item">
+              <div class="leader-profile">
+                <span class="leader-rank">1</span>
+                <span class="leader-name">EcoMaster_Chloe</span>
+              </div>
+              <span class="leader-xp">4,820 XP</span>
+            </div>
+            <div class="leader-item">
+              <div class="leader-profile">
+                <span class="leader-rank">2</span>
+                <span class="leader-name">CarbonFree_Ash</span>
+              </div>
+              <span class="leader-xp">4,150 XP</span>
+            </div>
+            <div class="leader-item current-user">
+              <div class="leader-profile">
+                <span class="leader-rank">3</span>
+                <span class="leader-name">You (EcoTrainer)</span>
+              </div>
+              <span class="leader-xp" id="trainer-total-xp">3,890 XP</span>
+            </div>
+            <div class="leader-item">
+              <div class="leader-profile">
+                <span class="leader-rank">4</span>
+                <span class="leader-name">GreenGlider</span>
+              </div>
+              <span class="leader-xp">3,620 XP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Impact Timeline -->
+      <div class="glass-panel panel-timeline reveal reveal-delay-2">
+        <h3>Trainer Impact Timeline</h3>
+        <p>Your chronological journey towards planetary restoration</p>
+        <div class="timeline-container">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-time">Today, 2:45 PM</div>
+              <div class="timeline-title">Calculated Environmental Footprint</div>
+              <div class="timeline-desc">Analyzed annual greenhouse metrics through the AI Footprint Scanner. Result: Grade B Trainer.</div>
+            </div>
+          </div>
+          <div class="timeline-item blue">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-time">Yesterday, 9:15 AM</div>
+              <div class="timeline-title">Unlocked Volt Spark Badge</div>
+              <div class="timeline-desc">Reached maximum XP progress on Pichu by decreasing domestic electric load below 300 kWh.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-time">3 Days Ago</div>
+              <div class="timeline-title">Caught Bulbasaur</div>
+              <div class="timeline-desc">Discovered Bulbasaur in the local forestry reserve after submitting water conservation metrics.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Divider -->
+  <div class="section-divider"></div>
+
+  <!-- Footprint Scanner & Future Simulator -->
+  <section class="page-section" id="simulator" style="position: relative;">
+    <span class="section-num-label">02</span>
+    <div class="section-header reveal">
+      <span class="section-subtitle">AI Lab</span>
+      <h2 class="section-title">Scanner & Future Projections</h2>
+    </div>
+
+    <div class="simulator-container">
+      <!-- Smart Footprint Scanner -->
+      <div class="glass-panel scanner-panel reveal reveal-left">
+        <!-- Scanning animation line -->
+        <div class="scanning-beam" id="scanner-line"></div>
+
+        <h3>Smart Footprint Scanner</h3>
+        <p class="score-label">Run a diagnostic check on your ecological footprint</p>
+        
+        <div class="scanner-steps">
+          <div class="step-node active" id="step-1">1</div>
+          <div class="step-node" id="step-2">2</div>
+          <div class="step-node" id="step-3">3</div>
+        </div>
+
+        <div class="scanner-questions">
+          <!-- Step 1: Transport -->
+          <div class="scanner-question-group active" id="q-group-1">
+            <span class="scanner-question-title"><i data-lucide="car"></i> Transportation Habits</span>
+            <div class="slider-group">
+              <div class="slider-label-wrapper">
+                <span>Weekly car mileage</span>
+                <span><span class="slider-unit" id="val-car">120</span> miles</span>
+              </div>
+              <input type="range" class="slider-input" id="input-car" min="0" max="500" value="120" oninput="updateScannerValue('car')">
+            </div>
+            <div class="slider-group">
+              <div class="slider-label-wrapper">
+                <span>Public transit usage</span>
+                <span><span class="slider-unit" id="val-transit">4</span> hours</span>
+              </div>
+              <input type="range" class="slider-input" id="input-transit" min="0" max="40" value="4" oninput="updateScannerValue('transit')">
+            </div>
+          </div>
+
+          <!-- Step 2: Energy -->
+          <div class="scanner-question-group" id="q-group-2">
+            <span class="scanner-question-title"><i data-lucide="plug"></i> Domestic Utility Load</span>
+            <div class="slider-group">
+              <div class="slider-label-wrapper">
+                <span>Monthly electricity consumption</span>
+                <span><span class="slider-unit" id="val-elec">280</span> kWh</span>
+              </div>
+              <input type="range" class="slider-input" id="input-elec" min="50" max="1000" value="280" oninput="updateScannerValue('elec')">
+            </div>
+            <div class="slider-group">
+              <div class="slider-label-wrapper">
+                <span>Renewable grid power portion</span>
+                <span><span class="slider-unit" id="val-renew">20</span> %</span>
+              </div>
+              <input type="range" class="slider-input" id="input-renew" min="0" max="100" value="20" oninput="updateScannerValue('renew')">
+            </div>
+          </div>
+
+          <!-- Step 3: Food & Waste -->
+          <div class="scanner-question-group" id="q-group-3">
+            <span class="scanner-question-title"><i data-lucide="apple"></i> Diet & Waste Diversion</span>
+            <div class="slider-group">
+              <div class="slider-label-wrapper">
+                <span>Meat meals consumed weekly</span>
+                <span><span class="slider-unit" id="val-meat">5</span> meals</span>
+              </div>
+              <input type="range" class="slider-input" id="input-meat" min="0" max="21" value="5" oninput="updateScannerValue('meat')">
+            </div>
+            <div class="slider-group">
+              <div class="slider-label-wrapper">
+                <span>Recycled/composted waste fraction</span>
+                <span><span class="slider-unit" id="val-waste-slider">60</span> %</span>
+              </div>
+              <input type="range" class="slider-input" id="input-waste" min="0" max="100" value="60" oninput="updateScannerValue('waste')">
+            </div>
+          </div>
+        </div>
+
+        <div class="scanner-nav-btns">
+          <button class="btn btn-secondary" id="scanner-prev" onclick="scannerPrevStep()"><i data-lucide="chevron-left"></i> Previous</button>
+          <button class="btn btn-primary" id="scanner-next" onclick="scannerNextStep()">Next Step <i data-lucide="chevron-right"></i></button>
+          <button class="btn btn-primary" id="scanner-submit" onclick="submitFootprintScan()">Scan Footprint <i data-lucide="radar"></i></button>
+        </div>
+      </div>
+
+      <!-- Eco Future Simulator -->
+      <div class="glass-panel future-panel reveal reveal-right reveal-delay-2">
+        <div class="future-header-row">
+          <span class="future-heading-title">Eco Future Projection</span>
+          <div class="streak-badge target-year-badge">
+            <i data-lucide="trending-down"></i> Projected Net Zero Target: <span id="projected-target-year">2048</span>
+          </div>
+        </div>
+        <p class="score-label">Simulate personal habit modifications to project planetary impact curves up to 2050</p>
+        
+        <div class="future-chart-box">
+          <canvas id="future-projection-chart"></canvas>
+        </div>
+
+        <div class="future-controls">
+          <div class="slider-group">
+            <div class="slider-label-wrapper">
+              <span>Transition to clean household grid</span>
+              <span><span class="slider-unit" id="sim-val-clean">20</span> % clean energy</span>
+            </div>
+            <input type="range" class="slider-input" id="sim-clean" min="0" max="100" value="20" oninput="updateSimulation()">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label-wrapper">
+              <span>Increase plant-based nutrition ratio</span>
+              <span><span class="slider-unit" id="sim-val-plant">30</span> % vegan</span>
+            </div>
+            <input type="range" class="slider-input" id="sim-plant" min="0" max="100" value="30" oninput="updateSimulation()">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label-wrapper">
+              <span>Adopt active or electric transport</span>
+              <span><span class="slider-unit" id="sim-val-transport">15</span> % EV/Cycling</span>
+            </div>
+            <input type="range" class="slider-input" id="sim-transport" min="0" max="100" value="15" oninput="updateSimulation()">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Divider -->
+  <div class="section-divider"></div>
+
+  <!-- Global Community Section -->
+  <section class="page-section" id="community" style="position: relative;">
+    <span class="section-num-label">04</span>
+    <div class="section-header reveal">
+      <span class="section-subtitle">Shared Ecosystem</span>
+      <h2 class="section-title">Global Trainer Alliances</h2>
+    </div>
+
+    <div class="glass-panel map-panel reveal">
+      <div class="map-layout">
+        <!-- Interactive world map -->
+        <div>
+          <h3>Eco-Trainers Activity Map</h3>
+          <div class="map-action-header">
+            <p class="score-label">Live simulated environmental action coordinates around the world</p>
+            <button class="btn btn-primary" id="btn-report-action" onclick="openActionModal()">
+              <i data-lucide="plus-circle"></i> Log Eco-Action
+            </button>
+          </div>
+          <div class="map-svg-container">
+            <svg class="world-map-svg" viewBox="0 0 1000 500" id="world-map">
+              <!-- Simulated active pins with sonar rings -->
+              <g class="map-pin" transform="translate(294, 137)" 
+                 data-city="New York" data-action="Planted 15 trees" data-element="grass" data-trainers="1,840" data-xp="+142.5k XP"
+                 onclick="triggerMapFeed('New York', 'Planted 15 trees', 'grass')">
+                <circle class="pin-sonar-1" cx="0" cy="0" r="6" fill="none" stroke="rgba(0,210,106,0.5)" stroke-width="1.5"/>
+                <circle class="pin-sonar-2" cx="0" cy="0" r="6" fill="none" stroke="rgba(0,210,106,0.3)" stroke-width="1"/>
+                <circle cx="0" cy="0" r="6" />
+              </g>
+              <g class="map-pin blue" transform="translate(500, 107)" 
+                 data-city="London" data-action="Reduced water waste" data-element="water" data-trainers="1,210" data-xp="+118.9k XP"
+                 onclick="triggerMapFeed('London', 'Reduced water waste', 'water')">
+                <circle class="pin-sonar-1" cx="0" cy="0" r="6" fill="none" stroke="rgba(0,191,255,0.5)" stroke-width="1.5"/>
+                <circle class="pin-sonar-2" cx="0" cy="0" r="6" fill="none" stroke="rgba(0,191,255,0.3)" stroke-width="1"/>
+                <circle cx="0" cy="0" r="6" />
+              </g>
+              <g class="map-pin" transform="translate(702, 197)" 
+                 data-city="Mumbai" data-action="Switched to Solar energy" data-element="electric" data-trainers="2,450" data-xp="+196.4k XP"
+                 onclick="triggerMapFeed('Mumbai', 'Switched to Solar energy', 'electric')">
+                <circle class="pin-sonar-1" cx="0" cy="0" r="6" fill="none" stroke="rgba(255,215,0,0.5)" stroke-width="1.5"/>
+                <circle class="pin-sonar-2" cx="0" cy="0" r="6" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+                <circle cx="0" cy="0" r="6" />
+              </g>
+              <g class="map-pin red" transform="translate(920, 344)" 
+                 data-city="Sydney" data-action="Recycled 40kg plastic" data-element="steel" data-trainers="980" data-xp="+84.2k XP"
+                 onclick="triggerMapFeed('Sydney', 'Recycled 40kg plastic', 'steel')">
+                <circle class="pin-sonar-1" cx="0" cy="0" r="6" fill="none" stroke="rgba(255,77,77,0.5)" stroke-width="1.5"/>
+                <circle class="pin-sonar-2" cx="0" cy="0" r="6" fill="none" stroke="rgba(255,77,77,0.3)" stroke-width="1"/>
+                <circle cx="0" cy="0" r="6" />
+              </g>
+              <g class="map-pin blue" transform="translate(370, 315)" 
+                 data-city="Sao Paulo" data-action="Transitioned to EV commuting" data-element="wind" data-trainers="1,150" data-xp="+96.4k XP"
+                 onclick="triggerMapFeed('Sao Paulo', 'Transitioned to EV commuting', 'wind')">
+                <circle class="pin-sonar-1" cx="0" cy="0" r="6" fill="none" stroke="rgba(135,239,255,0.5)" stroke-width="1.5"/>
+                <circle class="pin-sonar-2" cx="0" cy="0" r="6" fill="none" stroke="rgba(135,239,255,0.3)" stroke-width="1"/>
+                <circle cx="0" cy="0" r="6" />
+              </g>
+            </svg>
+            <div id="map-tooltip" class="map-tooltip"></div>
+          </div>
+        </div>
+
+        <!-- Alliance sidebar -->
+        <div class="map-sidebar">
+          <h3>Ecosystem Alliances</h3>
+          <div class="team-list">
+            <div class="team-card team-forest">
+              <div class="team-header">
+                <span class="team-name">Team Forest</span>
+                <span class="team-tag">Grass</span>
+              </div>
+              <div class="team-score-wrapper">
+                <span>Alliance Score</span>
+                <span>142,500 XP</span>
+              </div>
+              <div class="team-bar-outer">
+                <div class="team-bar-inner" style="--team-bar-target: 78%;"></div>
+              </div>
+            </div>
+
+            <div class="team-card team-ocean">
+              <div class="team-header">
+                <span class="team-name">Team Ocean</span>
+                <span class="team-tag">Water</span>
+              </div>
+              <div class="team-score-wrapper">
+                <span>Alliance Score</span>
+                <span>118,900 XP</span>
+              </div>
+              <div class="team-bar-outer">
+                <div class="team-bar-inner" style="--team-bar-target: 65%;"></div>
+              </div>
+            </div>
+
+            <div class="team-card team-sky">
+              <div class="team-header">
+                <span class="team-name">Team Sky</span>
+                <span class="team-tag">Sky / Wind</span>
+              </div>
+              <div class="team-score-wrapper">
+                <span>Alliance Score</span>
+                <span>96,400 XP</span>
+              </div>
+              <div class="team-bar-outer">
+                <div class="team-bar-inner" style="--team-bar-target: 53%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action feed -->
+          <div>
+            <span class="score-label">Live Alliance Action Feed</span>
+            <div class="map-live-feed" id="live-action-feed">
+              <div class="feed-item">Trainer Ash in Tokyo evolved Pichu to Stage 2! (+150 XP)</div>
+              <div class="feed-item">Trainer Chloe in Seattle completed meat-free week! (+80 XP)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Evolution Animation Screen Overlay -->
+  <div class="evolution-overlay" id="evo-screen">
+    <!-- Beam lights and particles inside -->
+    <div class="evo-beam-lights" id="evo-particles"></div>
+    
+    <div class="evolution-stage-wrapper">
+      <h2 class="evo-header-title" id="evo-status-text">Your Companion is Evolving!</h2>
+      <div class="evolution-visuals">
+        <div class="evo-glow-sphere" id="evo-glow"></div>
+        <div class="evo-creature-sprite" id="evo-sprite-container">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+      <div>
+        <p class="evo-subtitle" id="evo-creature-names">Bulbasaur is evolving into Ivysaur...</p>
+      </div>
+      <button class="btn btn-primary btn-evo-close" id="btn-close-evo" onclick="closeEvolutionScreen()">Awesome! <i data-lucide="check"></i></button>
+    </div>
+  </div>
+
+  <!-- Toast Notification Center -->
+  <div class="toast-container" id="toast-wrapper"></div>
+
+  <!-- Holographic EcoDex Details Modal -->
+  <div class="creature-modal-overlay" id="creature-modal" onclick="closeCreatureModal()">
+    <div class="creature-modal-content" onclick="event.stopPropagation()">
+      <button class="btn-modal-close" onclick="closeCreatureModal()">&times;</button>
+      <div class="creature-modal-grid">
+        <div class="creature-modal-visual">
+          <div class="modal-creature-glow" id="modal-glow"></div>
+          <div class="modal-creature-image-wrapper" id="modal-image-wrapper">
+            <!-- Dynamic Artwork -->
+          </div>
+        </div>
+        <div class="creature-modal-details">
+          <div class="modal-header-row">
+            <h3 id="modal-creature-name">Companion Name</h3>
+            <span class="creature-type-pill" id="modal-creature-type">Type</span>
+          </div>
+          <p class="modal-creature-stage" id="modal-creature-stage">Stage 1</p>
+          <div class="modal-section">
+            <h4 class="modal-sec-title">Ecological Background</h4>
+            <p id="modal-creature-desc" class="modal-sec-content">Description</p>
+          </div>
+          <div class="modal-section">
+            <h4 class="modal-sec-title">Climate Action Recommendation</h4>
+            <div id="modal-creature-tips" class="modal-sec-content flex-tips">
+              <!-- Element tips will go here -->
+            </div>
+          </div>
+          <div class="modal-section">
+            <h4 class="modal-sec-title">Trainer Synergy & Goals</h4>
+            <div class="modal-synergy-grid">
+              <div class="synergy-stat">
+                <span class="synergy-label">Element Power</span>
+                <span class="synergy-val" id="modal-element-power">Grass Sync</span>
+              </div>
+              <div class="synergy-stat">
+                <span class="synergy-label">Global Aura Boost</span>
+                <span class="synergy-val" id="modal-aura-boost">+0.5% Health</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Log Eco-Action Modal -->
+  <div class="creature-modal-overlay" id="action-modal" onclick="closeActionModal()">
+    <div class="creature-modal-content action-modal-content" onclick="event.stopPropagation()">
+      <button class="btn-modal-close" onclick="closeActionModal()">&times;</button>
+      <h3 class="action-modal-title">Log Your Eco-Action</h3>
+      <p class="score-label">Broadcast your ecological habit to the Global Alliance map and gain XP!</p>
+      
+      <form id="eco-action-form" onsubmit="handleReportActionSubmit(event)">
+        <div class="form-group">
+          <label for="action-city" class="form-label">Your Current City / Location</label>
+          <input type="text" id="action-city" class="form-input-field" placeholder="e.g. San Francisco, Tokyo" required>
+        </div>
+        <div class="form-group">
+          <label for="action-category" class="form-label">Habit Category</label>
+          <select id="action-category" class="form-input-field select-field" required>
+            <option value="grass">Planting Trees / Forestry (Grass Companion XP)</option>
+            <option value="water">Saving Water / Water Conservation (Water Companion XP)</option>
+            <option value="electric">Saving Power / Renewable Grid Load (Electric Companion XP)</option>
+            <option value="steel">Recycling / Diverting Waste (Steel Companion XP)</option>
+            <option value="wind">Active/Clean Transportation (Wind Companion XP)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="action-description" class="form-label">Brief Action Summary</label>
+          <input type="text" id="action-description" class="form-input-field" placeholder="e.g. Switched to LED bulb / Planted 2 oak saplings" required>
+        </div>
+        <button type="submit" class="btn btn-primary form-submit-btn">
+          Broadcast Action <i data-lucide="send"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Premium Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--primary-emerald)" stroke-width="2" fill="none">
+          <path d="M12 2a10 10 0 0 1 7.54 16.59l-1.42-1.42A8 8 0 1 0 5.88 17.17l-1.42 1.42A10 10 0 0 1 12 2z"/>
+          <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/>
+        </svg>
+        <span>EcoSphere AI</span>
+      </div>
+      <span class="footer-copy">© 2026 EcoSphere AI. Designed for Awwwards / CSSDesignAwards evaluation.</span>
+      <div class="footer-socials">
+        <a href="#" aria-label="Twitter">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+          </svg>
+        </a>
+        <a href="#" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+        </a>
+        <a href="#" aria-label="Globe">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts Loading -->
+  <!-- GSAP (Scrolling animations & smooth timing effects) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <!-- Three.js (Holographic 3D Globe) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Chart.js (Tesla-style carbon projection lines) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Application Core -->
+  <script src="app.js"></script>
+</body>
+</html>
